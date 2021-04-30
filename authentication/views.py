@@ -26,7 +26,8 @@ from django.http import HttpResponsePermanentRedirect
 
 class CustomRedirect(HttpResponsePermanentRedirect):
 
-    allowed_schemes = [config('APP_SCHEME'), 'http', 'https']
+    # allowed_schemes = [config('APP_SCHEME'), 'http', 'https']
+    pass
 
 class RegisterView(generics.GenericAPIView):
     serializer_class = RegisterSerializer
