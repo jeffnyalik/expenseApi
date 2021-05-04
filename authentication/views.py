@@ -18,11 +18,14 @@ from django.utils.encoding import smart_str, smart_bytes, force_str, DjangoUnico
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from authentication.serializer.auth.serializer import LogoutSerializer
+from authentication.serializer.auth.serializer import UserSerializer, UpdateUserSerializer
+from authentication.serializer.pwd.serializer import ChangePasswordSerializer
 from rest_framework import permissions
 from decouple import config
 from django.http import HttpResponsePermanentRedirect
-
-
+from rest_framework.views import APIView
+from expenses.permissions import IsOwner
+from rest_framework.generics import RetrieveUpdateAPIView
 
 class CustomRedirect(HttpResponsePermanentRedirect):
 
@@ -155,7 +158,32 @@ class LogoutUser(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
     
     def post(self, request):
+        permission_classes = [permissions.IsAuthenticated]
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({'success': True, 'message': 'Loggedout successfully'}, status=status.HTTP_200_OK)
+
+
+class UserApiView(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+
+class ChangePasswordApiView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = ChangePasswordSerializer
+
+    lookup_field = "id"
+
+class UpdateProfileView(RetrieveUpdateAPIView):
+    serializer_class = UpdateUserSerializer
+    queryset = User.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+    lookup_field = "id"
+    
+
+    # def get_queryset(self):
+    #     return self.queryset.filter(id=self.request.user)

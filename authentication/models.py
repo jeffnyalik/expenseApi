@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager, PermissionsMixin)
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.conf import settings
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None):
@@ -34,6 +35,10 @@ AUTH_PROVIDERS = {
 class User(AbstractBaseUser, PermissionsMixin ):
     email  = models.EmailField(max_length=255, unique=True)
     username = models.CharField(max_length=255, unique=True)
+    first_name = models.CharField(max_length=255, blank=True, null=True)
+    last_name = models.CharField(max_length=255, blank=True, null=True)
+    phone_number = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=255, blank=True, null=True)
    
     is_verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

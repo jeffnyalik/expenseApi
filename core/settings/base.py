@@ -1,5 +1,3 @@
-
-
 from pathlib import Path
 import os
 import datetime
@@ -12,14 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = config('SECRET_KEY')
-SECRET_KEY = '567734587467-86bsq69ojhndjcavrgtfopib1'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 AUTH_USER_MODEL = 'authentication.User'
 REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY': 'error',
@@ -38,23 +29,6 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(minutes=60),
 }
 
-## Email configuration
-# EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST=config('EMAIL_HOST')
-# EMAIL_PORT=config('EMAIL_PORT')
-# EMAIL_HOST_USER=config('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
-# EMAIL_USE_TLS = True
-## End
-
-## Email configuration
-EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST=''
-EMAIL_PORT=587
-EMAIL_HOST_USER=''
-EMAIL_HOST_PASSWORD=''
-EMAIL_USE_TLS = True
-## End
 
 # Application definition
 
