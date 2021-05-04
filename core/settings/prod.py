@@ -4,7 +4,8 @@ import os
 
 SECRET_KEY = 'dfdhfjhdjfkjk3834'
 DEBUG = False
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*']
+
 
 ## Email configuration
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
