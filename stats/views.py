@@ -22,7 +22,7 @@ class ExpenseSummaryStats(APIView):
         todays_date = datetime.date.today()
         year_ago = todays_date-datetime.timedelta(30*12)
         expenses = Expense.objects.filter(
-            owner = self.request.user, date__gte=year_ago, date__lte=todays_date
+            owner = self.request.user, date__gte=todays_date
         )
 
         final = {}
@@ -33,7 +33,7 @@ class ExpenseSummaryStats(APIView):
                     expenses, category
                 )
 
-        return response.Response({'category_data': final}, status=status.HTTP_200_OK)
+        return response.Response(final, status=status.HTTP_200_OK)
 
 
 class IncomeSourcesSummaryStats(APIView):
@@ -51,7 +51,7 @@ class IncomeSourcesSummaryStats(APIView):
         todays_date = datetime.date.today()
         year_ago = todays_date-datetime.timedelta(30*12)
         income = Income.objects.filter(
-            owner = self.request.user, date__gte=year_ago, date__lte=todays_date
+            owner = self.request.user, date__gte=todays_date
         )
 
         final = {}

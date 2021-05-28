@@ -60,13 +60,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_WHITELIST = [
-    "http://localhost:4200",
-    # "https://angular.com", ## Angular app frontend deployed url
-    "http://127.0.0.1:8000"
-]
-
-
 
 ROOT_URLCONF = 'core.urls'
 
@@ -99,16 +92,16 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'restapi',
-#         'HOST': '127.0.0.1',
-#         'PORT': '3306',
-#         'USER': 'root',
-#         'PASSWORD': '',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'restapi',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+        'USER': 'root',
+        'PASSWORD': '',
+    }
+}
 
 
 # Password validation
@@ -152,4 +145,15 @@ STATIC_URL = '/static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
+CORS_ORIGIN_ALLOW_ALL = True   
+
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:4200",
+    # "https://angular.com", ## Angular app frontend deployed url
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+]
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+

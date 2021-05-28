@@ -147,7 +147,16 @@ class LogoutSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'is_active']
+        fields = [
+            'id',
+            'username', 
+            'email', 
+            'first_name', 
+            'last_name',
+            'city',
+            'phone_number', 
+            'is_active'
+            ]
 
 
 
@@ -172,18 +181,6 @@ class UpdateUserSerializer(serializers.ModelSerializer):
             'phone_number': {'required': True},
             'city': {'required': True}
         }
-
-    def validate_email(self, value):
-        user = self.context['request'].user
-        if User.objects.exclude(pk=user.pk).filter(email=value).exists():
-            raise serializers.ValidationError({"email": "This email is already in use."})
-        return value
-
-    def validate_username(self, value):
-        user = self.context['request'].user
-        if User.objects.exclude(pk=user.pk).filter(username=value).exists():
-            raise serializers.ValidationError({"username": "This username is already in use."})
-        return value
 
     def update(self, instance, validated_data):
         instance.first_name = validated_data['first_name']

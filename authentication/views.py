@@ -26,6 +26,7 @@ from django.http import HttpResponsePermanentRedirect
 from rest_framework.views import APIView
 from expenses.permissions import IsOwner
 from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.generics import UpdateAPIView
 
 class CustomRedirect(HttpResponsePermanentRedirect):
 
@@ -47,7 +48,9 @@ class RegisterView(generics.GenericAPIView):
         current_site = get_current_site(request).domain
         relative_link = reverse('email-verify')
        
-        absurl = 'http://'+current_site+relative_link+"?token="+str(token)
+        # absurl = 'http://'+current_site+relative_link+"?token="+str(token)
+        # absurl = 'http://'+'127.0.0.1:4200/email-verify/'+"?token="+str(token)
+        absurl = 'http://'+'127.0.0.1:4200/email-verify/'+'?token='+str(token)
         email_body = 'Hi '+user.username + \
             ' Use the link below to verify your email \n' + absurl
         data = {'email_body': email_body, 'to_email': user.email,
@@ -95,7 +98,8 @@ class RequestPasswordResetEmail(generics.GenericAPIView):
             current_site = get_current_site(request=request).domain
             relative_link = reverse('password-reset-confirm', kwargs={'uidb64':uidb64, 'token':token})
 
-            redirect_url = request.data.get('redirect_url', '')
+            # redirect_url = request.data.get('redirect_url', '')
+            redirect_url = 'http://localhost:4200/password-reset'
         
             absurl = 'http://'+current_site+relative_link
             email_body = 'Hello, \n Use link below to reset your password  \n' + \
@@ -168,22 +172,61 @@ class LogoutUser(generics.GenericAPIView):
 class UserApiView(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAdminUser]
-
-
-class ChangePasswordApiView(generics.UpdateAPIView):
-    queryset = User.objects.all()
     permission_classes = [permissions.IsAuthenticated]
+
+
+class UserDetailView(generics.RetrieveUpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    lookup_id = "pk"
+
+
+class CurrentUserLoggedInUserView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def get(self, request):
+        serializer = UserSerializer(self.request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ChangePasswordApiView(UpdateAPIView):
     serializer_class = ChangePasswordSerializer
-
-    lookup_field = "id"
-
-class UpdateProfileView(RetrieveUpdateAPIView):
-    serializer_class = UpdateUserSerializer
-    queryset = User.objects.all()
+    model = User
     permission_classes = [permissions.IsAuthenticated]
-    lookup_field = "id"
-    
+    def get_object(self, queryset=None):
+        obj = self.request.user
+        return obj
 
-    # def get_queryset(self):
-    #     return self.queryset.filter(id=self.request.user)
+    def update(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            # Check old password
+            if not self.object.check_password(serializer.data.get("old_password")):
+                return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+            # set_password also hashes the password that the user will get
+            self.object.set_password(serializer.data.get("new_password"))
+            self.object.save()
+            response = {
+                'status': 'success',
+                'code': status.HTTP_200_OK,
+                'message': 'Password updated successfully',
+                'data': []
+            }
+
+            return Response(response)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UpdateProfileView(UpdateAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def put(self, request):
+        serializer = UpdateUserSerializer(self.request.user, data=request.data)
+        if(serializer.is_valid()):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
