@@ -17,7 +17,7 @@ SECRET_KEY = '567734587467-86bsq69ojhndjcavrgtfopib1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'https://expenseapp1990.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'expenseapp1990.herokuapp.com']
 AUTH_USER_MODEL = 'authentication.User'
 REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY': 'error',
