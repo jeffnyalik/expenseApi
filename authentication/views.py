@@ -50,7 +50,8 @@ class RegisterView(generics.GenericAPIView):
        
         # absurl = 'http://'+current_site+relative_link+"?token="+str(token)
         # absurl = 'http://'+'127.0.0.1:4200/email-verify/'+"?token="+str(token)
-        absurl = 'http://'+'127.0.0.1:4200/email-verify/'+'?token='+str(token)
+        # absurl = 'http://'+'127.0.0.1:4200/email-verify/'+'?token='+str(token) ##local url endpoint
+        absurl = 'https://'+'expenseapp-client.herokuapp.com/email-verify/'+'?token='+str(token)
         email_body = 'Hi '+user.username + \
             ' Use the link below to verify your email \n' + absurl
         data = {'email_body': email_body, 'to_email': user.email,
@@ -99,7 +100,9 @@ class RequestPasswordResetEmail(generics.GenericAPIView):
             relative_link = reverse('password-reset-confirm', kwargs={'uidb64':uidb64, 'token':token})
 
             # redirect_url = request.data.get('redirect_url', '')
-            redirect_url = 'http://localhost:4200/password-reset'
+            # redirect_url = 'http://localhost:4200/password-reset'; ##local url endpoint
+
+            redirect_url = 'https://expenseapp-client.herokuapp.com/password-reset'; ##production url endpoint
         
             absurl = 'http://'+current_site+relative_link
             email_body = 'Hello, \n Use link below to reset your password  \n' + \
