@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'income',
     'corsheaders',
     'stats',
+    'home',
 ]
 
 MIDDLEWARE = [

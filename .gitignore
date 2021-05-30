@@ -1,4 +1,3 @@
 .env
-/venv
-/core/settings/dev
-
+venv/
+/core/mysettings/dev/

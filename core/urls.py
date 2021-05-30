@@ -8,4 +8,5 @@ urlpatterns = [
     path('api/expenses/', include('expenses.urls'), name='expenses'),
     path('api/income/', include('income.urls'), name='income'),
     path('api/userstats/', include('stats.urls'), name='userstats'),
+    path('', include('home.urls'), name='homepage'),
 ]
