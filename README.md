@@ -32,6 +32,9 @@ it tracks and Manages your Expenses and income on a day to day basis
 1. Create a virtual environment
 2. pip install requirements.txt 
 
+## Links
+Angular Github  link (https://github.com/jeffnyalik/expense-client)
+
 ## Development server
 
-`https://expenseapp-client.herokuapp.com`. The frontend app is built using Angular v11
+(https://expenseapp-client.herokuapp.com). The frontend app is built using Angular v11
